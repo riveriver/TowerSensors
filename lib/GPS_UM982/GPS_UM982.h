@@ -62,7 +62,7 @@ public:
   String OutputGpsInfo(void)
   {
     /* time */
-    String str = "GPS:";
+    String str = "[GPS]:";
       if (hour < 10)
       {
         str += '0';

@@ -78,7 +78,7 @@ HardwareSerial Serial_IMU(1);
         WitReadReg(addr_q0, 4);
         // 10ms
         delay(10);
-        String str = "imu_rx:";
+        String str = "";
         while (Serial_IMU.available())
         {
             byte rx_byte = Serial_IMU.read();
@@ -86,7 +86,12 @@ HardwareSerial Serial_IMU(1);
             str += " 0x" + String(rx_byte,HEX);
         }
 #ifdef DEBUG_MODE
-        Serial.println(str);
+        if(str != ""){
+            Serial.printf("[IMU]online:");
+            Serial.println(str);
+        }else{
+            Serial.printf("[IMU]offline\n");
+        }
 #endif
         for(int i = 0; i < 4; i++)
         {
@@ -102,12 +107,20 @@ HardwareSerial Serial_IMU(1);
         uint8_t ucBuff[8] = {0x55,0x03,0x00,0x30,0x00,0x30,0x48,0x05};
         WitReadCustom(ucBuff);
         delay(2000);
-        Serial.printf("imu_raw:");
+        
+        String str = "";
         while (Serial_IMU.available())
         {
-            Serial.printf("0x%x ",Serial_IMU.read());
+            byte rx_byte = Serial_IMU.read();
+            str += " 0x" + String(rx_byte,HEX);
         }
-        Serial.println();
+        if(str != ""){
+            Serial.printf("[IMU]online:");
+            Serial.println(str);
+        }else{
+            Serial.printf("[IMU]offline\n");
+        }
+        
     }
     void Imu_initHwt9073(uint8_t addr){
         Serial_IMU.begin(9600,SERIAL_8N1,38,37,false);
